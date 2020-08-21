@@ -26,7 +26,9 @@ let schema = yup.object().shape({
   const formData = {
     size: '',
     sauce: '',
-    toppings: '',
+    toppings: {
+
+    },
     specialInstructions: '',
   }
   
@@ -54,7 +56,15 @@ let schema = yup.object().shape({
   
   
     }
-  
+    const checkboxChange = (name, isChecked) => {
+            setInputValue({
+          ...inputValue,
+          toppings: {
+            ...inputValue.toppings,
+            [name]: isChecked,
+          }
+        })
+      }
   
     const formChange = (name, value) => {
       yup.reach(schema, name).validate(value)
@@ -84,7 +94,7 @@ let schema = yup.object().shape({
             <Route exact path='/pizza'>
               <Order submit={formSubmit} updateInput={formChange}
                 errors={formErrors} pizza={pizza}
-                value={inputValue}
+                value={inputValue} checkboxChange={checkboxChange}
               />
             </Route>
           </Switch>
