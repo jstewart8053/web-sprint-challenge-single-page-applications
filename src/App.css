@@ -139,3 +139,19 @@ nav .links a:hover{
 .item textarea {
   font-size: 1.4rem;
 }
+
+.confirmation {
+  visibility: visible;
+  background-color: white;
+  height: 150px;
+  width: 100%;
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  text-align: center
+
+}
+
+.confirmation h2 {
+  font-size: 1.0 rem;
+  margin-bottom: 1rem;
+}

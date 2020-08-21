@@ -10,17 +10,17 @@ import axios from 'axios'
 
 
 let schema = yup.object().shape({
+    name: yup
+      .string()
+      .min(2, 'Please enter your name')
+      .required('Please enter your name'),
     size: yup
-      .string()
-      .required('Please select a size'),
+      .string(),
     sauce: yup
-      .string()
-      .required('Please select a sauce'),
+      .string(),
     toppings: yup
-      .string()
-      .required('Please enter a password'),
-    specialInstructions: yup
-      .string()
+      .string(),
+    specialInstructions: yup.string()
   });
   
   const formData = {
@@ -36,26 +36,28 @@ let schema = yup.object().shape({
     const [inputValue, setInputValue] = useState(formData);
     const [pizza, setPizza] = useState([])
     const [formErrors, setFormErrors] = useState([]);
-  
+    const [reqErr, setReqErr] = useState(null);
+
   
     const formSubmit = (event) => {
       event.preventDefault();
   
-      schema.validate(inputValue)
-        .then(valid => {
-          setInputValue(inputValue)
-          axios.post('https://reqres.in/api/users', { inputValue })
-            .then(res => {
-              setPizza([...pizza, res.data.inputValue])
-              setInputValue(formData)
-            })
-        })
-        .catch(err => {
-          console.log(err)
-        })
-  
+      axios.post('https://reqres.in/api/users', { inputValue })
+      .then(res => {
+        setPizza([...pizza, res.data.inputValue])
+        setInputValue(formData);
+
+      })
+      .catch(err => {
+        console.log(err)
+        setReqErr(err);
+      })
+      const conf = document.querySelector(".confirmation");
+      conf.style.visibility = "visible"
   
     }
+  
+    
     const checkboxChange = (name, isChecked) => {
             setInputValue({
           ...inputValue,
@@ -80,7 +82,6 @@ let schema = yup.object().shape({
         ...inputValue,
         [name]: value,
       })
-      console.log(inputValue)
     }
     return (
       <Router>
@@ -95,6 +96,7 @@ let schema = yup.object().shape({
               <Order submit={formSubmit} updateInput={formChange}
                 errors={formErrors} pizza={pizza}
                 value={inputValue} checkboxChange={checkboxChange}
+                reqErr={reqErr}
               />
             </Route>
           </Switch>
@@ -102,5 +104,5 @@ let schema = yup.object().shape({
         </div>
       </Router>
     );
-  };
+  }
   export default App;

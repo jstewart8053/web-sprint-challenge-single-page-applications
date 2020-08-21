@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Order(props) {
-  const { submit, updateInput, errors, pizza, value, checkboxChange } = props
+  const { submit, updateInput, errors, pizza, value, checkboxChange, reqErr } = props
 
   const change = (event) => {
     const { name, value } = event.target;
@@ -13,15 +13,37 @@ function Order(props) {
     checkboxChange(name, checked)
   }
   return (
-    <div className='order'>
-      <div>
-        {errors.size}<br />
-        {errors.sauce}<br />
-        {errors.toppings}
+      <>
+ <div className='confirmation'>
+            {pizza.length > 1 &&
+          <div>
+            <h2>Congrats! Pizza is on it's way</h2>
+            <p>
+              Order Name: {pizza[0].name}<br />
+              Pizza Size: {pizza[0].size}<br />
+              Pizza Sauce: {pizza[0].sauce}<br />
+              Special Instructions: none
+              
+            </p>
+          </div>
+        }
       </div>
+      <div className='order'>
+   
       <h1>Build your own pizza</h1>
+      <div>
+          {errors.name}<br /><br />
+          {reqErr &&
+            < h2 > There was an error with you request</h2>
+          }
+        </div>
       <form onSubmit={submit}>
         <div className="item">
+        <label htmlFor="">Name for order</label>
+        <input type="text" name="name" onChange={change} />
+          </div>
+          <div className="item">
+
           <label htmlFor="size">Pick a size</label>
           <select name="size" onChange={change}>
             <option>---- Select a size ---</option>
@@ -71,12 +93,12 @@ function Order(props) {
             <textarea name="specialInstructions" cols="30" rows="3" onChange={change}></textarea>
           </div>
 
-          <button name='submit'>Submit  </button>
+          <button name='submit'>Submit </button>
         </div>
       </form>
 
-      <div>{pizza.size}</div>
-    </div>
+          </div>
+          </>
   )
 }
 
